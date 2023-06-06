@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Parameters:
+  InstanceName:
+    Type: String
+    Default: MySecondInstance
+Resources:
+  PhoneNumber2:
+    Type: AWS::Connect::PhoneNumber
+    Properties:
+      Description: Phone number created using cfn
+      CountryCode: US
+      TargetArn:
+        Fn::ImportValue: MySecondInstance
+      Type: DID
+Outputs:
+  ConnectPhoneNumber:
+    Value:
+      Ref: PhoneNumber2
+    Export:
+      Name:
+        Fn::Sub: ${InstanceName}PhoneNumber
+  ConnectPhoneNumberAddress:
+    Value:
+      Fn::GetAtt:
+      - PhoneNumber2
+      - Address
+    Export:
+      Name:
+        Fn::Sub: ${InstanceName}PhoneNumberAddress
+  ConnectPhoneNumberPhoneNumberArn:
+    Value:
+      Fn::GetAtt:
+      - PhoneNumber2
+      - PhoneNumberArn
+    Export:
+      Name:
+        Fn::Sub: ${InstanceName}PhoneNumberPhoneNumberArn
